@@ -1,0 +1,793 @@
+/*
+ * Author       : nitin.warrier
+ * Generated on : 29-Oct-2019 22:57:23
+ * Version      : 1.0
+ */
+ application "QR1"
+ {
+ 	date format = "dd-MMM-yyyy"
+ 	time zone = "Asia/Kolkata"
+ 	time format = "24-hr"
+	section Sheet1
+	{
+		icon = "tech-desktop"
+		form Sheet1
+		{
+			success message = "Data Added Successfully!"
+			field alignment = left
+			feature property = 32
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Contact_Name
+			(
+    			type = name
+				displayname = "Contact Name"
+     			Prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			First_Name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			Last_Name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+	     			 visibility = false
+     			) 
+     			Suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Phone_Number
+			(
+				type = number
+				displayname = "Phone Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Email_Address
+			(
+    			type = email
+				displayname = "Email Address"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		list Sheet1_Report
+		{
+			displayName = "Sheet1 Report"
+			show all rows from Sheet1    
+			(
+				Contact_Name  as "Contact Name"
+	 			(
+	      			displayformat = [First_Name+""+Prefix+""+Last_Name+""+Suffix]
+	 			)
+				Phone_Number as "Phone Number"
+				Email_Address as "Email Address"
+			)
+			conditional formatting
+			(
+				"New Formatting"
+				{
+				fields = [Email_Address]
+				format = "color:#0000ff;"
+				}
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Contact_Name as "Contact Name"
+							Phone_Number as "Phone Number"
+							Email_Address as "Email Address"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    		 			Add 
+    		 			Print 
+    		 			Import 
+    		 			Export 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Print   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								Print   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Contact_Name as "Contact Name"
+							Phone_Number as "Phone Number"
+							Email_Address as "Email Address"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Print 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Bar_QR_Code_Generator
+	{
+		displayname= "Bar/QR Code Generator"
+		form Generate_Code
+		{
+			displayname = "Generate Code"
+			success message = "Generated Code Added Successfully!"
+			field alignment = left
+			feature property = 32
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Select_Encoding
+			(
+				type = picklist
+				displayname = "Select Encoding"
+				values = {"QR Code", "Code 39", "Code 128a", "Code 128b", "Code 128c", "4 of 5 Interleaved"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Warning_Message
+			(
+    			type = plaintext
+				value = "<span style=\"color: red; font-family: &quot;Open Sans&quot;, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 12px; background-color: rgb(255, 255, 255)\">This Encoding Supports only Numeric Values</span>"
+	 			row = 1
+	 			column = 1   
+				width = 300px
+			)
+			Enter_the_data_to_be_coded
+			(
+    			type = text
+				displayname = "Enter the data to be coded"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Generated_Code_Output
+			(
+    			type = plaintext
+				value = ""
+	 			row = 1
+	 			column = 1   
+				width = 300px
+			)
+			Generated_Code
+			(
+    			type = image
+				displayname = "Generated Code"
+				source  = public_url,file
+				camera = primary
+				show gallery = true
+				switch camera = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		list Encoded_Data
+		{
+			displayName = "Encoded Data"
+			show all rows from Generate_Code    
+			(
+				Select_Encoding as "Encoding Type"
+				Enter_the_data_to_be_coded as "Data"
+				Generated_Code as "Generated Code"
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 3
+					datablock1
+					(
+			 			layout type = 7
+		     			title = "Overview"
+						fields
+						(
+							Generated_Code as "Generated Code"
+							Select_Encoding as "Encoding Type"
+							Enter_the_data_to_be_coded as "Data"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    		 			Add 
+    		 			Print 
+    		 			Import 
+    		 			Export 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Print   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								Print   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Select_Encoding as "Encoding Type"
+							Enter_the_data_to_be_coded as "Data"
+							Generated_Code as "Generated Code"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Print 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Bar_Qr_Code_Scanner
+	{
+		displayname= "Bar/Qr Code Scanner"
+		icon = "tech-desktop"
+		form Read_Bar_QR_Code
+		{
+			displayname = "Read Bar/QR Code"
+			success message = "Code has been scanned Successfully!"
+			field alignment = left
+			feature property = 32
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Serial_No
+			(
+    			type = autonumber
+				displayname = "Serial No"
+				start index = 1
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Your_Scanned_Bar_QR_code_Value
+			(
+    			type = text
+				displayname = "Your Scanned Bar/QR code Value"
+				qrcode = true
+				barcode = true
+				show onload = true
+				camera = primary
+				preview duration = 0
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Dropdown
+			(
+				type = picklist
+				displayname = "Drop Down"
+				values = {"Karting", "Cricket", "Bowling", "Arcade", "Lazer tag", "Kids Play"}
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			must have Date_field
+			(
+    			type = date
+				displayname = "Date"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Save Scanned Data"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		list Scanned_Reports
+		{
+			displayName = "Scanned Reports"
+			show all rows from Read_Bar_QR_Code    
+			(
+				Your_Scanned_Bar_QR_code_Value as "Scanned Bar/QR code Value"
+				Serial_No as "Serial No"
+				Date_field as "Date"
+				Dropdown as "Drop Down"
+			)
+			group by
+			(
+				Date_field ascending
+			)
+			quickview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = 1
+		     			title = "Overview"
+						fields
+						(
+							Dropdown as "Drop Down"
+							Your_Scanned_Bar_QR_code_Value as "Scanned Bar/QR code Value"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    		 			Add 
+    		 			Print 
+    		 			Import 
+    		 			Export 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Print   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								Print   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Serial_No as "Serial No"
+							Your_Scanned_Bar_QR_code_Value as "Scanned Bar/QR code Value"
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Print 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+		pivottable Summary_report
+		{ 
+			displayname = "Summary report"
+			based on Autoview_1571664574732_Read_Bar_QR_Code
+							icon = "business-laptop-71"				show all rows from Read_Bar_QR_Code
+				(
+ 					Serial_No  as "Serial No"
+ 					Dropdown  as "Drop Down"
+ 					Your_Scanned_Bar_QR_code_Value  as "Your Scanned Bar/QR code Value"
+ 					Date_field  as "Date"
+				)
+		}
+	}
+
+
+
+	workflow
+	{
+		form
+		{
+			Run_Scripts_On_Always6 as "Run Scripts - On Always"
+			{
+				type =  form
+					form = Generate_Code
+				on add or edit
+				{
+					actions 
+					{
+						hide Generated_Code,Warning_Message;
+					on user input of Select_Encoding
+					(
+						hide Warning_Message;
+										//Generate barcode only if both the Encoding type and data are both given
+										if(input.Select_Encoding == null || input.Select_Encoding == "-Select-" || input.Select_Encoding == "" || input.Enter_the_data_to_be_coded == null || input.Enter_the_data_to_be_coded == "")
+										{
+											//do nothing
+										}
+										else
+										{
+											if(input.Select_Encoding == "QR Code")
+											{
+												a = "myfile";
+												//Show generated code in notes field 
+												input.Generated_Code_Output = "Generated Code:<br><br><img src='http://barcodes4.me/barcode/qr/" + a + ".png?value=" + input.Enter_the_data_to_be_coded + "'>";
+												input.Generated_Code = "<img src='http://barcodes4.me/barcode/qr/" + a + ".png?value=" + input.Enter_the_data_to_be_coded + "'/>";
+											}
+											else
+											{
+												//Assign different values based on the encoding type 
+												if(input.Select_Encoding == "Code 39")
+												{
+													a = "c39";
+												}
+												else if(input.Select_Encoding == "Code 128a")
+												{
+													a = "c128a";
+												}
+												else if(input.Select_Encoding == "Code 128b")
+												{
+													a = "c128b";
+												}
+												else if(input.Select_Encoding == "Code 128c")
+												{
+													a = "c128c";
+													//Checking for alphabets since 'Code 128c' does not support alphabets
+													AlphaVal = input.Enter_the_data_to_be_coded.getAlpha();
+													if(AlphaVal.length() > 0)
+													{
+														show Warning_Message;
+													}
+												}
+												else if(input.Select_Encoding == "4 of 5 Interleaved")
+												{
+													a = "i2of5";
+													//Checking for alphabets since '4 of 5 Interleaved' does not support alphabets
+													AlphaVal = input.Enter_the_data_to_be_coded.getAlpha();
+													if(AlphaVal.length() > 0)
+													{
+														show Warning_Message;
+													}
+												}
+												//Show generated code in notes field 
+												input.Generated_Code_Output = "Generated Code:<br><img src='http://barcodes4.me/barcode/" + a + "/" + input.Enter_the_data_to_be_coded + ".jpg'>";
+												input.Generated_Code = "<img src='http://barcodes4.me/barcode/" + a + "/" + input.Enter_the_data_to_be_coded + ".jpg'/>";
+											}
+										}
+					)
+					on user input of Enter_the_data_to_be_coded
+					(
+						hide Warning_Message;
+										//Generate barcode only if both the Encoding type and data are both given
+										if(input.Select_Encoding == null || input.Select_Encoding == "-Select-" || input.Select_Encoding == "" || input.Enter_the_data_to_be_coded == null || input.Enter_the_data_to_be_coded == "")
+										{
+											//do nothing
+										}
+										else
+										{
+											if(input.Select_Encoding == "QR Code")
+											{
+												a = "myfile";
+												//Show generated code in notes field 
+												input.Generated_Code_Output = "Generated Code:<br><br><img src='http://barcodes4.me/barcode/qr/" + a + ".png?value=" + input.Enter_the_data_to_be_coded + "'>";
+												input.Generated_Code = "<img src='http://barcodes4.me/barcode/qr/" + a + ".png?value=" + input.Enter_the_data_to_be_coded + "'/>";
+											}
+											else
+											{
+												//Assign different values based on the encoding type 
+												if(input.Select_Encoding == "Code 39")
+												{
+													a = "c39";
+												}
+												else if(input.Select_Encoding == "Code 128a")
+												{
+													a = "c128a";
+												}
+												else if(input.Select_Encoding == "Code 128b")
+												{
+													a = "c128b";
+												}
+												else if(input.Select_Encoding == "Code 128c")
+												{
+													a = "c128c";
+													//Checking for alphabets since 'Code 128c' does not support alphabets
+													AlphaVal = input.Enter_the_data_to_be_coded.getAlpha();
+													if(AlphaVal.length() > 0)
+													{
+														show Warning_Message;
+													}
+												}
+												else if(input.Select_Encoding == "4 of 5 Interleaved")
+												{
+													a = "i2of5";
+													//Checking for alphabets since '4 of 5 Interleaved' does not support alphabets
+													AlphaVal = input.Enter_the_data_to_be_coded.getAlpha();
+													if(AlphaVal.length() > 0)
+													{
+														show Warning_Message;
+													}
+												}
+												//Show generated code in notes field 
+												input.Generated_Code_Output = "Generated Code:<br><img src='http://barcodes4.me/barcode/" + a + "/" + input.Enter_the_data_to_be_coded + ".jpg'>";
+												input.Generated_Code = "<img src='http://barcodes4.me/barcode/" + a + "/" + input.Enter_the_data_to_be_coded + ".jpg'/>";
+											}
+										}
+					)
+					}
+				}
+			}
+			Query_customer as "Query customer"
+			{
+				type =  form
+					form = Read_Bar_QR_Code
+				on edit
+				{
+				}
+			}
+		}
+	}
+	share_settings
+	{
+			"Read"
+			{
+				name = "Read"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have read permission for all components\n"
+			}
+			"Write"
+			{
+				name = "Write"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have write permission for all components\n"
+			}
+			"Administrator"
+			{
+				name = "Administrator"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have all the permissions.\n"
+			}
+			roles
+			{
+				"CEO"
+				{
+					description = "User belonging to this role can access data of all other users.\n"
+				}
+			}
+	}
+
+	customize
+	{
+		
+		layout = "tab"
+		color = "black"
+		base theme = "professional"
+		new theme = 1
+		
+		icons = true
+		icons style = outline
+	}
+
+	
+	reports configuration
+	{
+	
+		Version = 1251000150141100
+		Key     = "7a5X0HtFCYnA7R7MKqSrPWweSgPfYAz1uagMZ6KXwmpBejJyuRM6r8r4ZdgN2gaXUy4zeCtgF6DyHgaEgbhfAhbXSTdnkHVqt6J3"
+	}
+}

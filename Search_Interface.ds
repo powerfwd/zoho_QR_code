@@ -1,0 +1,309 @@
+/*
+ * Author       : anandmb1
+ * Generated on : 15-Feb-2019 00:45:48
+ * Version      : 1.0
+ */
+ application "Search Interface"
+ {
+ 	date format = "dd-MMM-yyyy"
+ 	time zone = "IST"
+	section Emp
+	{
+		icon = "tech-desktop"
+		form Emp
+		{
+			success message = "Data Added Successfully!"
+			field alignment = left
+			feature property = 32
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Single_Line
+			(
+    			type = text
+				displayname = "Single Line"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Email
+			(
+    			type = email
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			Image
+			(
+    			type = image
+				source  = public_url,file
+				enable = link
+				camera = primary
+				show gallery = true
+				switch camera = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			customize
+			(
+				icon = "ui-1-bold-add"
+			)
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+		list Emp_Report
+		{
+			displayName = "Emp Report"
+			show all rows from Emp    
+			(
+				Single_Line as "Single Line"
+				Email
+			)
+			options
+			(
+				icon = "design-bullet-list-67"
+	 		)
+			quickview
+			(
+				layout
+				(
+		 			type = -1
+					datablock1
+					(
+			 			layout type = -1
+		     			title = "Overview"
+						fields
+						(
+							Single_Line as "Single Line"
+							Email
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+							record
+							(
+								Edit   	   
+								Duplicate   	   
+								Delete   	   
+    						)
+    			)
+    			action
+    			(
+							on click
+							(
+								View Record   	   
+    						)
+							on right click
+							(
+								Edit   	   
+								Delete   	   
+								Duplicate   	   
+								View Record   	   
+    						)
+     			)
+			)
+			detailview
+			(
+				layout
+				(
+		 			type = 1
+					datablock1
+					(
+			 			layout type = -2
+		     			title = "Overview"
+						fields
+						(
+							Single_Line as "Single Line"
+							Email
+						)
+					)
+				)
+
+				menu
+    			(
+    	 			header
+    	 			(
+    		 			Edit 
+    		 			Duplicate 
+    		 			Delete 
+    	 			)
+    			)
+			)
+		}
+	}
+	section Search
+	{
+		form Search
+		{
+			store data in zc = false
+			success message = "Data Added Successfully!"
+			field alignment = left
+			feature property = 32
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			Single_Line
+			(
+    			type = text
+				displayname = "Single Line"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				Search
+				(
+   					type = submit
+   					displayname = "Search"
+				)
+				Reset
+				(
+   					type = reset
+   					displayname = "Reset"
+				)
+			}
+		}
+	}
+	section Dashboard
+	{
+		icon = "tech-desktop"
+				 page Dashboard 
+	 	 { 
+ 	 	 displayname = "Dashboard" 
+
+ 	 	 icon = "" 
+	 	 Content="<zml \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n\t\t>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<form    \t\t appLinkName = 'thisapp'\n   \t\t urlAppLinkName = 'thisapp'\n   \t\t heightType = 'auto'\n   \t\t linkName = 'Search'\n   \t\t urlType = 'none'\n\n\/>\n<\/column>\n<\/row><row>\n\t<column\n   \t\t width=\"100%\"\n   \t>\n\t<dsp id='html_snippet'>\n\t<![CDATA[htmlpage html_snippet()\ncontent\n&lt;%{\n\t%&gt;\n&lt;iframe height=&apos;500px&apos; width=&apos;100%&apos; src=&quot;&quot; name=&quot;one&quot; &gt;&lt;\/iframe&gt;\n&lt;%\n\n}%&gt;]]>\n<\/dsp>\n<\/column>\n<\/row>\n<\/layout>\n<\/zml>" 
+ 	 	}
+	}
+	workflow
+	{
+		form
+		{
+			QR_generation as "QR generation"
+			{
+    			type =  form
+				form = Emp
+				on add or edit
+				{
+					actions 
+					{
+						on success
+						(
+							URL = "<img src='https://chart.googleapis.com/chart?cht=qr&chs=100x100&chl=" + input.Single_Line + "&style=197&type=C128B&width=271&height=50&xres=1&font=3'/>";
+										input.Image = URL;
+						)	
+					}
+				}
+			}
+			search as "search"
+			{
+    			type =  form
+				form = Search
+				button = Search
+				on click
+				{
+					actions 
+					{
+						on click
+						(
+							//openUrl("#Report:Emp_Report?Single_Line=" + input.Single_Line,"iframe","one");
+										str = zoho.appuri + "/report-embed/Emp_Report?Single_Line=";
+										openUrl(str + input.Single_Line,"iframe","one");
+						)	
+					}
+				}
+			}
+		}
+	}
+	share_settings
+	{
+			"Read"
+			{
+				name = "Read"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have read permission for all components\n"
+			}
+			"Write"
+			{
+				name = "Write"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have write permission for all components\n"
+			}
+			"Administrator"
+			{
+				name = "Administrator"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true}
+				description = "This profile will have all the permissions.\n"
+			}
+			roles
+			{
+				"CEO"
+				{
+					description = "User belonging to this role can access data of all other users.\n\n\n\n"
+				}
+			}
+	}
+
+	customize
+	{
+		
+		layout = "tab"
+		color = "black"
+		base theme = "professional"
+		new theme = 1
+		new theme color = 1
+		icons = true
+		icons style = outline
+	}
+	
+			}
